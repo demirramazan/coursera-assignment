@@ -11,6 +11,8 @@ import com.coursera.librarian.service.BorrowerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BorrowerServiceImpl implements BorrowerService {
     private final BorrowerRepository borrowerRepository;
     private final BorrowerConverter borrowerConverter;
@@ -34,7 +37,7 @@ public class BorrowerServiceImpl implements BorrowerService {
     @Override
     public BorrowerDto getBorrowerByName(String name) {
         Borrower borrower = borrowerRepository.findByName(name)
-                .orElseThrow(() -> new NotFoundException(MessageFormat.format("%s name Not Found Borrower", name)));
+                .orElseThrow(() -> new NotFoundException(MessageFormat.format("{0} name Not Found Borrower", name)));
 
         return borrowerConverter.convert(borrower);
     }
@@ -48,7 +51,7 @@ public class BorrowerServiceImpl implements BorrowerService {
     public BorrowerDto saveBorrower(BorrowerRequest request) {
         Optional<Borrower> borrowerIsExist = borrowerRepository.findByName(request.getName());
         if (borrowerIsExist.isPresent()) {
-            throw new AlreadyEntityException(MessageFormat.format("%s Borrower already saved", request.getName()));
+            throw new AlreadyEntityException(MessageFormat.format("{0} Borrower already saved", request.getName()));
         }
         Borrower borrower = Borrower.builder().name(request.getName()).build();
         return borrowerConverter.convert(borrowerRepository.save(borrower));
@@ -57,7 +60,7 @@ public class BorrowerServiceImpl implements BorrowerService {
     @Override
     public BorrowerDto updateBorrower(BorrowerRequest request, Long id) {
         Borrower updatedBorrower = borrowerRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(MessageFormat.format("Not Found Borrower %d", id)));
+                .orElseThrow(() -> new NotFoundException(MessageFormat.format("Not Found Borrower {0}", id)));
         updatedBorrower.setName(request.getName());
 
         return borrowerConverter.convert(borrowerRepository.save(updatedBorrower));
@@ -68,7 +71,7 @@ public class BorrowerServiceImpl implements BorrowerService {
         try {
             borrowerRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new NotFoundException(MessageFormat.format("Borrower Not Found id: %d", id));
+            throw new NotFoundException(String.format("Borrower Not Found id: %d", id));
         }
     }
 

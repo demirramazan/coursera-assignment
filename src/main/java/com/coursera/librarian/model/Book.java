@@ -16,8 +16,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "book")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Book implements Serializable {
 
     @Id
@@ -50,19 +50,22 @@ public class Book implements Serializable {
     @Column(name = "rating")
     private Integer rating;
 
-    @Column(name = "image_url",length = 100)
+    @Column(name = "image_url", length = 100)
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id")
+    @JoinColumn(name = "author_id", referencedColumnName = "id", nullable = false
+            , foreignKey = @ForeignKey(name = "FK_AUTHOR"))
     private Author author;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "genre_id")
+    @JoinColumn(name = "genre_id",  referencedColumnName = "id",nullable = false
+            , foreignKey = @ForeignKey(name = "FK_GENRE"))
     private Genre genre;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "publisher_id")
+    @JoinColumn(name = "publisher_id",  referencedColumnName = "id",nullable = false
+            , foreignKey = @ForeignKey(name = "FK_PUBLISHER"))
     private Publisher publisher;
 
 }

@@ -7,7 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Optional;
 
-public interface BookRepository extends JpaRepository<Book,Long> {
+public interface BookRepository extends JpaRepository<Book, Long> {
+    @Query("from Book b, Genre g where b.genre.id=g.id and g.id=?1 ")
     List<Book> findByGenre_Id(Long genreId);
 
     Optional<Book> findByNameContaining(String name);

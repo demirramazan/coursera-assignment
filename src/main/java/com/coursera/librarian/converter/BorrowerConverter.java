@@ -11,6 +11,8 @@ public class BorrowerConverter implements Converter<Borrower, BorrowerDto> {
     public BorrowerDto convert(Borrower borrower) {
         return BorrowerDto.builder()
                 .id(borrower.getId()).name(borrower.getName())
+                .email(borrower.getEmail())
+                .phoneNumber(borrower.getPhoneNumber())
                 .build();
     }
 }

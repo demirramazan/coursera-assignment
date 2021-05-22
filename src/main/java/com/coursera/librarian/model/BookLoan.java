@@ -1,5 +1,6 @@
 package com.coursera.librarian.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 @Table(name = "book_loan")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class BookLoan implements Serializable {
     @Id
     @SequenceGenerator(name = "seq_bookloan_gen", sequenceName = "seq_bookloan", allocationSize = 1)
@@ -30,12 +32,14 @@ public class BookLoan implements Serializable {
     @Column(name = "due_date")
     private LocalDate dueDate;
 
-    @OneToOne
-    @JoinColumn(name = "book_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id", referencedColumnName = "id", nullable = false,
+             foreignKey = @ForeignKey(name = "FK_BOOK"))
     private Book book;
 
-    @OneToOne
-    @JoinColumn(name = "borrower_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "borrower_id", referencedColumnName = "id", nullable = false,
+             foreignKey = @ForeignKey(name = "FK_BORROWER"))
     private Borrower borrower;
 
 }

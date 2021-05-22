@@ -1,5 +1,6 @@
 package com.coursera.librarian.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 @Table(name = "borrower")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Borrower implements Serializable {
 
     @Id

@@ -17,6 +17,8 @@ import com.coursera.librarian.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Collections;
@@ -69,6 +71,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public BookDto saveBook(BookRequest request) {
         Book saveBookData = convertToBookData(request);
         return bookConverter.convert(bookRepository.save(saveBookData));
@@ -101,20 +104,22 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public BookDto updateBook(BookRequest request, Long id) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(MessageFormat.format("{0} id book not found", id)));
-        Book updatedBook = updateBookConvertDate(request, book);
+        Book updatedBook = updateBookConvertData(request, book);
         return bookConverter.convert(bookRepository.save(updatedBook));
     }
 
-    private Book updateBookConvertDate(BookRequest request, Book book) {
+    private Book updateBookConvertData(BookRequest request, Book book) {
         Book bookUpdated = convertToBookData(request);
         bookUpdated.setId(book.getId());
         return bookUpdated;
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void deleteBook(Long id) {
         try {
             genreRepository.deleteById(id);
@@ -124,6 +129,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void deleteAllBook() {
         genreRepository.deleteAll();
     }

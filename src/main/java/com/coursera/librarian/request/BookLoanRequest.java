@@ -1,7 +1,6 @@
 package com.coursera.librarian.request;
 
-import com.coursera.librarian.model.Book;
-import com.coursera.librarian.model.Borrower;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,13 +15,16 @@ import java.time.LocalDate;
 public class BookLoanRequest {
     private Long id;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateOfPurchase;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateOfArrival;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dueDate;
 
-    private Book book;
+    private Long bookId;
 
-    private Borrower borrower;
+    private Long borrowerId;
 }

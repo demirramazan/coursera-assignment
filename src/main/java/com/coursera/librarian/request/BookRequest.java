@@ -3,6 +3,7 @@ package com.coursera.librarian.request;
 import com.coursera.librarian.model.Author;
 import com.coursera.librarian.model.Genre;
 import com.coursera.librarian.model.Publisher;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,6 +28,7 @@ public class BookRequest {
 
     private Boolean available;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate publishDate;
 
     private Integer edition;

@@ -2,6 +2,7 @@ package com.coursera.librarian.service;
 
 import com.coursera.librarian.dto.BookLoanDto;
 import com.coursera.librarian.request.BookLoanRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -10,17 +11,15 @@ public interface BookLoanService {
 
     BookLoanDto getBookLoan(Long id);
 
-    List<BookLoanDto> getBookByBookName(String bookName);
+    List<BookLoanDto> getBookLoanByBookName(String bookName);
 
-    BookLoanDto getBookByBookId(Long bookId);
+    List<BookLoanDto> getBookLoanByBookId(Long bookId);
 
-    BookLoanDto getBookByBorrowerId(Long borrowerId);
-
-    BookLoanDto getBookByBorrowerId(String borrowerName);
+    List<BookLoanDto> getBookByBorrowerId(Long borrowerId);
 
     List<BookLoanDto> getBookLoansByDueDate(LocalDate startDate, LocalDate endDate);
 
-    List<BookLoanDto> getAllBookLoan();
+    List<BookLoanDto> getAllBookLoan(Pageable pageable);
 
     BookLoanDto saveBookLoan(BookLoanRequest bookLoanRequest);
 

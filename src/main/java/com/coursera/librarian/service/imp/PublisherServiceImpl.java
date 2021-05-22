@@ -9,8 +9,11 @@ import com.coursera.librarian.repository.PublisherRepository;
 import com.coursera.librarian.request.PublisherRequest;
 import com.coursera.librarian.service.PublisherService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -19,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PublisherServiceImpl implements PublisherService {
     private final PublisherRepository publisherRepository;
     private final PublisherConverter publisherConverter;
@@ -68,7 +72,9 @@ public class PublisherServiceImpl implements PublisherService {
         try {
             publisherRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new NotFoundException(MessageFormat.format("Publisher Not Found id: %d", id));
+            throw new NotFoundException(MessageFormat.format("Publisher Not Found id: {0}", id));
+        } catch (DataIntegrityViolationException e) {
+            throw new RuntimeException(MessageFormat.format("Genre is relation other table. Genre {0} is not delete.", id));
         }
     }
 
