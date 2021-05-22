@@ -1,7 +1,6 @@
-# coursera-assignment
-##Coursera Spring Framework Course Assigment
+## Coursera Spring Framework Course Assigment
 
-#Swagger url :
+# Swagger url :
 * http://localhost:8082/api/swagger-ui/index.html
 
 # Docker Compose Postgres Db Up
